@@ -3,7 +3,7 @@ PREFIX = /usr/local
 
 all: devd-notifier
 
-devd-notifier:
+devd-notifier: devd-notifier.c
 	${CC} -o devd-notifier devd-notifier.c
 
 install: devd-notifier
