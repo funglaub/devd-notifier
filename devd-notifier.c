@@ -162,7 +162,8 @@ int main(int argc, char *argv[])
       p += pmatch[0].rm_eo;
 
       sprintf(message, "%s %s", tmp[0], tmp[1]);
-      printf("%s\n", message);
+      /* printf("%s\n", message); */
+      
       free(tmp[0]);
       free(tmp[1]);
       
@@ -172,6 +173,5 @@ int main(int argc, char *argv[])
   }
 
   close(socket_fd);
-
   exit(EXIT_SUCCESS);
 }
