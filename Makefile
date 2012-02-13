@@ -1,5 +1,3 @@
-.PHONY: all install clean
-
 CC = gcc -Wall -pedantic -std=c99  `pkg-config --cflags --libs libnotify`
 PREFIX = /usr/local
 
@@ -13,3 +11,5 @@ install: devd-notifier
 
 clean: 
 	rm -f devd-notifier
+
+.PHONY: all install clean
