@@ -74,21 +74,25 @@ void daemonize() {
 int main(int argc, char *argv[])
 {
   int opt = 0;
-  struct sockaddr_un address;
   int  socket_fd, nbytes;
-  char buffer[256];
-  char message[256];
-  int n_matches = 3;
-
-  char *tmp[n_matches-1];
-  
-  regmatch_t pmatch[n_matches];
-  char *match, *p;
-  
+  int nmatches = 3;
   int i;
 
-  memset(&message, 0, strlen(message));
+  struct sockaddr_un address;
   
+  char buffer[256];
+  char message[256];
+  char *match, *p;
+  
+  const char *create = "attached";
+  const char *destroy = "detached";
+  const char *action;
+  
+  regmatch_t pmatch[nmatches];
+
+  memset(&message, 0, strlen(message));
+
+  // by default call daemonize() and fork to background
   globalArgs.daemonize = 1;
   
   while( opt != -1 ) {
@@ -114,7 +118,7 @@ int main(int argc, char *argv[])
 
   if (globalArgs.daemonize == 1)
     daemonize();
-  
+
   socket_fd = socket(PF_UNIX, SOCK_STREAM, 0);
   
   if(socket_fd < 0) {
@@ -140,33 +144,33 @@ int main(int argc, char *argv[])
   while ((nbytes = read(socket_fd, buffer, 256)) > 0) {
     buffer[nbytes] = 0;
 
-    if (regexec(&regex, buffer, n_matches, pmatch, 0) == 0) {
+    if (regexec(&regex, buffer, nmatches, pmatch, 0) == 0) {
       p = buffer;
       
-      for (i = 0; i < n_matches; i++) {
+      for (i = 0; i < nmatches; i++) {
         if (pmatch[i].rm_so == -1)
           break;
 
         match = strndup (p + pmatch[i].rm_so, pmatch[i].rm_eo - pmatch[i].rm_so);
 
-        // i = 0 is the whole match. we don't need it here
-        if (i > 0) {
-          tmp[i-1] = (char *)malloc(sizeof(char)*strlen(match)+1);
-          memcpy(tmp[i-1], match, strlen(match));
-          /* printf("%s\n", tmp[i-1]); */
+        if ( i == nmatches-2) {
+            if ( strcmp(match, "CREATE") == 0 )
+              action = create;
+            else
+              action = destroy;
         }
         
+        if (i == nmatches-1)
+          sprintf(message, "%s %s", match, action);
+
         free(match);
-      }
+      } // for
 
       p += pmatch[0].rm_eo;
 
-      sprintf(message, "%s %s", tmp[0], tmp[1]);
-      /* printf("%s\n", message); */
-      
-      free(tmp[0]);
-      free(tmp[1]);
-      
+      /* sprintf(message, "%s %s", match, action); */
+      printf("%s\n", message);
+
       NotifyNotification *msg = notify_notification_new("devd", message, NULL);
       notify_notification_show(msg, NULL);
      }
