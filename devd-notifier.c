@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
   
   const char *create = "attached";
   const char *destroy = "detached";
-  const char *action;
+  const char *action = NULL;
   
   regmatch_t pmatch[nmatches];
 
@@ -168,8 +168,8 @@ int main(int argc, char *argv[])
 
       p += pmatch[0].rm_eo;
 
-      /* sprintf(message, "%s %s", match, action); */
-      printf("%s\n", message);
+      if (globalArgs.daemonize == 0)
+        printf("%s\n", message);
 
       NotifyNotification *msg = notify_notification_new("devd", message, NULL);
       notify_notification_show(msg, NULL);

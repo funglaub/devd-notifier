@@ -1,1 +1,3 @@
 devd-notifier
+*.o
+devd-notifier.1
