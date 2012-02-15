@@ -5,7 +5,7 @@ VERSION = 0.1
 # paths
 
 PREFIX=/usr/local
-MANPREFIX = ${PREFIX}/share/man
+MANPREFIX = ${PREFIX}/man
 
 # includes and libs
 INCS = `pkg-config --cflags libnotify`
