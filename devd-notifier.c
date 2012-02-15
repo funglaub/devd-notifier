@@ -80,14 +80,19 @@ int main(int argc, char *argv[])
 
   struct sockaddr_un address;
   
-  char buffer[256];
-  char message[256];
+  char buffer[256]; // temporary buffer for socket reading
+  char message[256]; // the message we output
   char *match, *p;
-  
+
+  // Strings for devd action types
   const char *create = "attached";
   const char *destroy = "detached";
   const char *action = NULL;
-  
+
+  // We will have 3 matches
+  // 1st: The whole string
+  // 2nd: The type (create/destroy)
+  // 3rd: The device name
   regmatch_t pmatch[nmatches];
 
   memset(&message, 0, strlen(message));
