@@ -1,0 +1,33 @@
+.\" Process this file with
+.\" groff -man -Tascii foo.1
+.\"
+.TH "devd-notifier" "1" "VERSION"
+.SH NAME
+devd-notifer \- a simple daemon notifying the user about
+.BR devd(8)
+events with libnotify
+.SH SYNOPSIS
+.B devd-notifier [
+.I  options 
+.B ]
+.SH DESCRIPTION
+.B devd-notifier
+parses all
+.BR devd(8) 
+messages from 
+.I /var/run/devd.pipe
+with a configurable regular expression and notifies the user about
+creating and destroying of device nodes.
+.SH OPTIONS
+.TP
+.B "-f"
+Do not fork to background and print messages to STDOUT.
+.TP
+.B -h 
+Display the help and exit.
+.SH BUGS
+None, hopefully.
+.SH "SEE ALSO"
+.BR devd (8)
+.SH AUTHOR
+Florian Unglaub <f.unglaub@googlemail.com>
