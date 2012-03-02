@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
     if (regexec(&regex, buffer, nmatches, pmatch, 0) == 0) {
       p = buffer;
       
-      for (i = 0; i < nmatches; i++) {
+      for (i = 1; i < nmatches; i++) {
         if (pmatch[i].rm_so == -1)
           break;
 
