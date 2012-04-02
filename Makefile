@@ -6,7 +6,7 @@ OBJ = ${SRC:.c=.o}
 
 all: options devd-notifier
 
-options: 
+options:
 	@echo build options:
 	@echo "CFLAGS  = ${CFLAGS}"
 	@echo "LDFLAGS = ${LDFLAGS}"
@@ -22,8 +22,17 @@ devd-notifier: ${OBJ}
 	@echo CC -o $@
 	@${CC} -o $@ ${OBJ} ${LDFLAGS}
 
+dist: clean
+	@echo creating dist tarball
+	@mkdir -p devd-notifier-${VERSION}
+	@cp -R LICENSE Makefile config.mk config.h README \
+				 devd-notifier.1 ${SRC}	devd-notifier.h \
+				 devd-notifier-${VERSION}
+	@tar czf devd-notifier-${VERSION}.tar devd-notifier-${VERSION}
+	@rm -rf devd-notifier-${VERSION}
+
 man: devd-notifier.1.in
-	@sed -e "s/VERSION/${VERSION}/g" < devd-notifier.1.in | gzip > devd-notifier.1.gz
+	gzip devd-notifier.1.gz
 
 clean:
 	@echo cleaning
@@ -46,4 +55,3 @@ uninstall:
 	@rm -f ${DESTDIR}${MANPREFIX}/man1/devd-notifier.1
 
 .PHONY: all options clean install uninstall
-
