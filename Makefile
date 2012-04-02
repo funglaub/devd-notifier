@@ -31,7 +31,7 @@ dist: clean
 	@tar czf devd-notifier-${VERSION}.tar.gz devd-notifier-${VERSION}
 	@rm -rf devd-notifier-${VERSION}
 
-man: devd-notifier.1.in
+man: devd-notifier.1
 	gzip devd-notifier.1.gz
 
 clean:
