@@ -4,7 +4,7 @@ include config.mk
 SRC = devd-notifier.c
 OBJ = ${SRC:.c=.o}
 
-all: options devd-notifier
+all: options devd-notifier man
 
 options:
 	@echo build options:
